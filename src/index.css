@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --bg-app-base: #e2edd9;
+  --bg-app-grid: #d3e2c7;
+
+  --bg-card: #ffebe9;
+  --bg-input: #ffffff;
+
+  --text-main: #583e2e;
+  --text-muted: #7c604f;
+  --border-color: #583e2e;
+
+  --accent-mint: #b9d8c2;
+  --accent-yellow: #fcf1cc;
+  --accent-rose: #e5989b;
+
+  --font-family: "Fredoka", sans-serif;
+
+  --radius-lg: 24px;
+  --radius-md: 14px;
+  --sketch-border: 3px solid var(--border-color);
+
+  --shadow-flat: 5px 5px 0px rgba(88, 62, 46, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-app-base);
+
+  background-image:
+    linear-gradient(var(--bg-app-grid) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, var(--bg-app-grid) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.4;
+  padding: 30px 20px;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
