@@ -1,6 +1,7 @@
 import { useState } from "react";
 import FormularioCostos from "./components/FormularioCostos";
 import ResultadoTarifa from "./components/ResultadoTarifa";
+import "./App.css";
 
 function App() {
   const [costos, setCostos] = useState({
