@@ -4,14 +4,26 @@ import ResultadoTarifa from "./components/ResultadoTarifa";
 
 function App() {
   const [costos, setCostos] = useState({
+    conectividadServicios: 0,
+    suscripcionesSoftware: 0,
+    espacioAlquiler: 0,
     salarioDeseado: 0,
-    gastosFijos: 0,
-    horasTrabajo: 0,
+    ahorroMensual: 0,
     porcentajeImprevistos: 0,
+    horasSemanales: 0,
+    vacacionesSemanas: 0,
   }); // Le paso a useState el objeto con los valores iniciales en cero, desestructurando el array que devuelve useState y así obtengo la variable contenedora (costos)
 
-  const { salarioDeseado, gastosFijos, horasTrabajo, porcentajeImprevistos } =
-    costos; // Para no escribir "costos.salarioDeseado, costos.gastosFijos" etc en todos lados, desestructuro las propiedades del objeto costos
+  const {
+    salarioDeseado,
+    porcentajeImprevistos,
+    horasSemanales,
+    conectividadServicios,
+    suscripcionesSoftware,
+    espacioAlquiler,
+    ahorroMensual,
+    vacacionesSemanas,
+  } = costos; // Para no escribir "costos.salarioDeseado, costos.gastosFijos" etc en todos lados, desestructuro las propiedades del objeto costos
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -22,18 +34,27 @@ function App() {
     }));
   }
 
-  const horasMensuales = horasTrabajo * 4.33;
-  const gastosConImprevistos =
-    (salarioDeseado + gastosFijos) * (1 + porcentajeImprevistos / 100);
+  const semanasLaborales = 52 - vacacionesSemanas;
+  const horasAnuales = horasSemanales * semanasLaborales;
+  const horasMensualesPromedio = horasAnuales / 12;
+  const costosFijosMensuales =
+    conectividadServicios + suscripcionesSoftware + espacioAlquiler;
+  const metasMensuales = salarioDeseado + ahorroMensual;
+  const presupuestoMensualRequerido =
+    (costosFijosMensuales + metasMensuales) * (1 + porcentajeImprevistos / 100);
   const valorHora =
-    horasMensuales > 0 ? gastosConImprevistos / horasMensuales : 0;
+    horasMensualesPromedio > 0
+      ? presupuestoMensualRequerido / horasMensualesPromedio
+      : 0;
 
   return (
-    <div>
+    <main>
       <h1>Calculadora Freelancer</h1>
       <FormularioCostos costos={costos} handleChange={handleChange} />
-      <ResultadoTarifa valorHora={valorHora} />
-    </div>
+      <section>
+        <ResultadoTarifa valorHora={valorHora} />
+      </section>
+    </main>
   );
 }
 
