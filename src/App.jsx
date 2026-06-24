@@ -2,18 +2,31 @@ import { useState } from "react";
 import FormularioCostos from "./components/FormularioCostos";
 import ResultadoTarifa from "./components/ResultadoTarifa";
 import "./App.css";
+import { useEffect } from "react";
 
 function App() {
-  const [costos, setCostos] = useState({
-    conectividadServicios: 0,
-    suscripcionesSoftware: 0,
-    espacioAlquiler: 0,
-    salarioDeseado: 0,
-    ahorroMensual: 0,
-    porcentajeImprevistos: 0,
-    horasSemanales: 0,
-    vacacionesSemanas: 0,
-  }); // Le paso a useState el objeto con los valores iniciales en cero, desestructurando el array que devuelve useState y así obtengo la variable contenedora (costos)
+  const [datosCalculados, setDatosCalculados] = useState(() => {
+    const datos_calculadora = localStorage.getItem("clave");
+    if (datos_calculadora !== null) {
+      return JSON.parse(datos_calculadora);
+    } else {
+      return {
+        conectividadServicios: 2000,
+        suscripcionesSoftware: 300,
+        espacioAlquiler: 8000,
+        salarioDeseado: 60000,
+        ahorroMensual: 10000,
+        porcentajeImprevistos: 3,
+        horasSemanales: 40,
+        vacacionesSemanas: 3,
+      };
+    }
+  });
+
+  useEffect(() => {
+    const stringDatosCalculados = JSON.stringify(datosCalculados);
+    localStorage.setItem("clave", stringDatosCalculados);
+  }, [datosCalculados]);
 
   const {
     salarioDeseado,
@@ -24,13 +37,13 @@ function App() {
     espacioAlquiler,
     ahorroMensual,
     vacacionesSemanas,
-  } = costos; // Para no escribir "costos.salarioDeseado, costos.gastosFijos" etc en todos lados, desestructuro las propiedades del objeto costos
+  } = datosCalculados; // Para no escribir "costos.salarioDeseado, costos.gastosFijos" etc en todos lados, desestructuro las propiedades del objeto costos
 
   function handleChange(event) {
     const { name, value } = event.target;
 
-    setCostos((prevCostos) => ({
-      ...prevCostos, // Copio los otros valores que no son dinámicos
+    setDatosCalculados((prevDatosCalculados) => ({
+      ...prevDatosCalculados, // Copio los otros valores que no son dinámicos
       [name]: Number(value), // Lo convierto a número usando Number porque los inputs devuelven texto
     }));
   }
@@ -51,7 +64,10 @@ function App() {
   return (
     <main>
       <h1>Calculadora Freelancer</h1>
-      <FormularioCostos costos={costos} handleChange={handleChange} />
+      <FormularioCostos
+        datosCalculados={datosCalculados}
+        handleChange={handleChange}
+      />
       <section>
         <ResultadoTarifa valorHora={valorHora} />
       </section>
