@@ -1,4 +1,4 @@
-function FormularioCostos({ costos, handleChange }) {
+function FormularioCostos({ datosCalculados, handleChange }) {
   return (
     <form>
       <fieldset>
@@ -9,7 +9,7 @@ function FormularioCostos({ costos, handleChange }) {
           id="conectividadServicios"
           min="0"
           name="conectividadServicios"
-          value={costos.conectividadServicios}
+          value={datosCalculados.conectividadServicios}
           onChange={handleChange}
         />
 
@@ -19,7 +19,7 @@ function FormularioCostos({ costos, handleChange }) {
           id="suscripcionesSoftware"
           min="0"
           name="suscripcionesSoftware"
-          value={costos.suscripcionesSoftware}
+          value={datosCalculados.suscripcionesSoftware}
           onChange={handleChange}
         />
 
@@ -29,7 +29,7 @@ function FormularioCostos({ costos, handleChange }) {
           id="espacioAlquiler"
           min="0"
           name="espacioAlquiler"
-          value={costos.espacioAlquiler}
+          value={datosCalculados.espacioAlquiler}
           onChange={handleChange}
         />
       </fieldset>
@@ -42,7 +42,7 @@ function FormularioCostos({ costos, handleChange }) {
           id="salarioDeseado"
           min="0"
           name="salarioDeseado"
-          value={costos.salarioDeseado}
+          value={datosCalculados.salarioDeseado}
           onChange={handleChange}
         />
 
@@ -52,7 +52,7 @@ function FormularioCostos({ costos, handleChange }) {
           id="ahorroMensual"
           min="0"
           name="ahorroMensual"
-          value={costos.ahorroMensual}
+          value={datosCalculados.ahorroMensual}
           onChange={handleChange}
         />
 
@@ -64,7 +64,7 @@ function FormularioCostos({ costos, handleChange }) {
           id="porcentajeImprevistos"
           min="0"
           name="porcentajeImprevistos"
-          value={costos.porcentajeImprevistos}
+          value={datosCalculados.porcentajeImprevistos}
           onChange={handleChange}
         />
       </fieldset>
@@ -77,7 +77,7 @@ function FormularioCostos({ costos, handleChange }) {
           id="horasSemanales"
           min="0"
           name="horasSemanales"
-          value={costos.horasSemanales}
+          value={datosCalculados.horasSemanales}
           onChange={handleChange}
         />
 
@@ -87,7 +87,7 @@ function FormularioCostos({ costos, handleChange }) {
           id="vacacionesSemanas"
           min="0"
           name="vacacionesSemanas"
-          value={costos.vacacionesSemanas}
+          value={datosCalculados.vacacionesSemanas}
           onChange={handleChange}
         />
       </fieldset>
