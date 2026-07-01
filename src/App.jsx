@@ -53,6 +53,10 @@ function App() {
   function handleChange(event) {
     const { name, value } = event.target;
 
+    if (value.length > 8) {
+      return;
+    }
+
     setDatosCalculados((prevDatosCalculados) => ({
       ...prevDatosCalculados, // Copio los otros valores que no son dinámicos
       [name]: value, // Lo convierto a número usando Number porque los inputs devuelven texto
