@@ -28,6 +28,17 @@ function App() {
     localStorage.setItem("clave", stringDatosCalculados);
   }, [datosCalculados]);
 
+  const datosSanitizados = {
+    salarioDeseado: Number(datosCalculados.salarioDeseado) || 0,
+    porcentajeImprevistos: Number(datosCalculados.porcentajeImprevistos) || 0,
+    horasSemanales: Number(datosCalculados.horasSemanales) || 0,
+    conectividadServicios: Number(datosCalculados.conectividadServicios) || 0,
+    suscripcionesSoftware: Number(datosCalculados.suscripcionesSoftware) || 0,
+    espacioAlquiler: Number(datosCalculados.espacioAlquiler) || 0,
+    ahorroMensual: Number(datosCalculados.ahorroMensual) || 0,
+    vacacionesSemanas: Number(datosCalculados.vacacionesSemanas) || 0,
+  };
+
   const {
     salarioDeseado,
     porcentajeImprevistos,
@@ -37,14 +48,14 @@ function App() {
     espacioAlquiler,
     ahorroMensual,
     vacacionesSemanas,
-  } = datosCalculados; // Para no escribir "costos.salarioDeseado, costos.gastosFijos" etc en todos lados, desestructuro las propiedades del objeto costos
+  } = datosSanitizados; // Para no escribir "datosSanitizados.salarioDeseado, datosSanitizados.gastosFijos" etc en todos lados, desestructuro las propiedades del objeto datosSanitizados
 
   function handleChange(event) {
     const { name, value } = event.target;
 
     setDatosCalculados((prevDatosCalculados) => ({
       ...prevDatosCalculados, // Copio los otros valores que no son dinámicos
-      [name]: Number(value), // Lo convierto a número usando Number porque los inputs devuelven texto
+      [name]: value, // Lo convierto a número usando Number porque los inputs devuelven texto
     }));
   }
 
