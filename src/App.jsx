@@ -53,7 +53,7 @@ function App() {
   function handleChange(event) {
     const { name, value } = event.target;
 
-    if (value.length > 8) {
+    if (value.length > 8 || value.includes("-")) {
       return;
     }
 
