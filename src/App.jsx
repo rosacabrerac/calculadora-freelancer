@@ -28,6 +28,17 @@ function App() {
     localStorage.setItem("clave", stringDatosCalculados);
   }, [datosCalculados]);
 
+  const datosSanitizados = {
+    salarioDeseado: Number(datosCalculados.salarioDeseado) || 0,
+    porcentajeImprevistos: Number(datosCalculados.porcentajeImprevistos) || 0,
+    horasSemanales: Number(datosCalculados.horasSemanales) || 0,
+    conectividadServicios: Number(datosCalculados.conectividadServicios) || 0,
+    suscripcionesSoftware: Number(datosCalculados.suscripcionesSoftware) || 0,
+    espacioAlquiler: Number(datosCalculados.espacioAlquiler) || 0,
+    ahorroMensual: Number(datosCalculados.ahorroMensual) || 0,
+    vacacionesSemanas: Number(datosCalculados.vacacionesSemanas) || 0,
+  };
+
   const {
     salarioDeseado,
     porcentajeImprevistos,
@@ -37,15 +48,36 @@ function App() {
     espacioAlquiler,
     ahorroMensual,
     vacacionesSemanas,
-  } = datosCalculados; // Para no escribir "costos.salarioDeseado, costos.gastosFijos" etc en todos lados, desestructuro las propiedades del objeto costos
+  } = datosSanitizados; // Para no escribir "datosSanitizados.salarioDeseado, datosSanitizados.gastosFijos" etc en todos lados, desestructuro las propiedades del objeto datosSanitizados
 
   function handleChange(event) {
     const { name, value } = event.target;
 
+    if (value.length > 8 || value.includes("-")) {
+      return;
+    }
+
     setDatosCalculados((prevDatosCalculados) => ({
       ...prevDatosCalculados, // Copio los otros valores que no son dinámicos
-      [name]: Number(value), // Lo convierto a número usando Number porque los inputs devuelven texto
+      [name]: value, // Lo convierto a número usando Number porque los inputs devuelven texto
     }));
+  }
+
+  function handlePaste(event) {
+    const { name } = event.target;
+    const text = event.clipboardData.getData("text");
+    const valorLimpio = cleanFormattedNumber(text);
+
+    if (valorLimpio.length > 8 || valorLimpio.includes("-")) {
+      event.preventDefault();
+      return;
+    }
+
+    setDatosCalculados((prevDatosCalculados) => ({
+      ...prevDatosCalculados,
+      [name]: valorLimpio,
+    }));
+    event.preventDefault();
   }
 
   const semanasLaborales = 52 - vacacionesSemanas;
@@ -67,6 +99,7 @@ function App() {
       <FormularioCostos
         datosCalculados={datosCalculados}
         handleChange={handleChange}
+        handlePaste={handlePaste}
       />
       <section>
         <ResultadoTarifa valorHora={valorHora} />
@@ -76,3 +109,33 @@ function App() {
 }
 
 export default App;
+
+function cleanFormattedNumber(value) {
+  let clean = value.replace(/[^0-9.,-]/g, "");
+  const hasComma = clean.includes(",");
+  const hasDot = clean.includes(".");
+
+  if (hasComma && hasDot) {
+    if (clean.lastIndexOf(",") > clean.lastIndexOf(".")) {
+      clean = clean.replace(/\./g, "").replace(",", ".");
+    } else {
+      clean = clean.replace(/,/g, "");
+    }
+  } else if (hasComma) {
+    clean = clean.replace(",", ".");
+  } else if (hasDot) {
+    const cantidadDePuntos = (clean.match(/\./g) || []).length;
+
+    if (cantidadDePuntos > 1) {
+      clean = clean.replace(/\./g, "");
+    } else {
+      const partes = clean.split(".");
+
+      if (partes[1] && partes[1].length === 3) {
+        clean = clean.replace(".", "");
+      }
+    }
+  }
+
+  return clean;
+}

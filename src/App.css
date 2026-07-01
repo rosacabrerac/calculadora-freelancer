@@ -117,6 +117,7 @@ section {
   border: var(--sketch-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-flat);
+  overflow-wrap: anywhere;
   padding: 30px;
   width: 100%;
   max-width: 500px;
