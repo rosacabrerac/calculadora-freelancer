@@ -1,6 +1,6 @@
-function FormularioCostos({ datosCalculados, handleChange }) {
+function FormularioCostos({ datosCalculados, handleChange, handlePaste }) {
   return (
-    <form>
+    <form onPaste={handlePaste}>
       <fieldset>
         <legend>Costos Fijos</legend>
         <label htmlFor="conectividadServicios">Conectividad y Servicios:</label>

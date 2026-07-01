@@ -63,6 +63,23 @@ function App() {
     }));
   }
 
+  function handlePaste(event) {
+    const { name } = event.target;
+    const text = event.clipboardData.getData("text");
+    const valorLimpio = cleanFormattedNumber(text);
+
+    if (valorLimpio.length > 8 || valorLimpio.includes("-")) {
+      event.preventDefault();
+      return;
+    }
+
+    setDatosCalculados((prevDatosCalculados) => ({
+      ...prevDatosCalculados,
+      [name]: valorLimpio,
+    }));
+    event.preventDefault();
+  }
+
   const semanasLaborales = 52 - vacacionesSemanas;
   const horasAnuales = horasSemanales * semanasLaborales;
   const horasMensualesPromedio = horasAnuales / 12;
@@ -82,6 +99,7 @@ function App() {
       <FormularioCostos
         datosCalculados={datosCalculados}
         handleChange={handleChange}
+        handlePaste={handlePaste}
       />
       <section>
         <ResultadoTarifa valorHora={valorHora} />
@@ -91,3 +109,33 @@ function App() {
 }
 
 export default App;
+
+function cleanFormattedNumber(value) {
+  let clean = value.replace(/[^0-9.,-]/g, "");
+  const hasComma = clean.includes(",");
+  const hasDot = clean.includes(".");
+
+  if (hasComma && hasDot) {
+    if (clean.lastIndexOf(",") > clean.lastIndexOf(".")) {
+      clean = clean.replace(/\./g, "").replace(",", ".");
+    } else {
+      clean = clean.replace(/,/g, "");
+    }
+  } else if (hasComma) {
+    clean = clean.replace(",", ".");
+  } else if (hasDot) {
+    const cantidadDePuntos = (clean.match(/\./g) || []).length;
+
+    if (cantidadDePuntos > 1) {
+      clean = clean.replace(/\./g, "");
+    } else {
+      const partes = clean.split(".");
+
+      if (partes[1] && partes[1].length === 3) {
+        clean = clean.replace(".", "");
+      }
+    }
+  }
+
+  return clean;
+}
